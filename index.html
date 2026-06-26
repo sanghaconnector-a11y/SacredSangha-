@@ -8,17 +8,16 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* Palette — earthy, muted, never saturated */
-      --beige:       #f5f0e8;       /* page 1, 4 */
-      --sage-bg:     #dde5d8;       /* page 2, 5 — soft sage wash */
-      --brown-bg:    #e8ddd0;       /* page 3 — warm muted brown */
-      --sage-text:   #4d6e52;       /* primary green text */
-      --sage-mid:    #6b8f6f;       /* secondary green */
-      --stone:       #9e9486;       /* muted labels */
-      --ink:         #2c2820;       /* body text */
-      --divider:     #d0c8ba;       /* lines */
-      --card-beige:  #f0e9dc;       /* cards on brown bg */
-      --card-sage:   #dce6da;       /* cards on sage bg */
+      --beige:       #f5f0e8;
+      --sage-bg:     #dde5d8;
+      --brown-bg:    #e8ddd0;
+      --sage-text:   #4d6e52;
+      --sage-mid:    #6b8f6f;
+      --stone:       #9e9486;
+      --ink:         #2c2820;
+      --divider:     #d0c8ba;
+      --card-beige:  #f0e9dc;
+      --card-sage:   #dce6da;
       --footer-bg:   #3a3530;
     }
 
@@ -45,18 +44,26 @@
       border-bottom: 1px solid var(--divider);
     }
 
-    .nav-wordmark {
-      font-size: 0.74rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--sage-text);
-      font-style: italic;
+    .nav-left {
+      display: flex;
+      align-items: center;
     }
 
-    .nav-cta {
-      font-family: inherit;
+    .nav-about-btn {
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--stone);
       background: none;
+      border: none;
       cursor: pointer;
+      padding: 0;
+      font-family: Georgia, 'Times New Roman', serif;
+      transition: color 0.2s;
+    }
+    .nav-about-btn:hover { color: var(--sage-text); }
+
+    .nav-cta {
       font-size: 0.7rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -94,6 +101,57 @@
       justify-content: center;
       padding-top: 5rem;
       gap: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── Breath Rings ── */
+    .breath-rings {
+      position: absolute;
+      left: 50%;
+      top: 0; /* nudged by JS to align with hero title center */
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 0;
+      width: 0;
+      height: 0;
+    }
+
+    /* Each ring: concentric circles all centered on the same origin */
+    .breath-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1.2px solid rgba(107,143,111,0.55);
+      top: 0;
+      left: 0;
+      width: var(--base-size);
+      height: var(--base-size);
+      margin-top: calc(var(--base-size) / -2);
+      margin-left: calc(var(--base-size) / -2);
+      opacity: 0;
+      animation: breathCycle 14s ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+
+    /* All three rings expand to the same size — stagger creates the ripple illusion */
+    .breath-ring { --base-size: 380px; }
+
+    /* Ripple outward: born small, expand, dissolve — never contract back */
+    @keyframes breathCycle {
+      0%   { transform: scale(0.08); opacity: 0;    }
+      6%   { transform: scale(0.10); opacity: 0.55; }
+      40%  { transform: scale(0.55); opacity: 0.35; }
+      75%  { transform: scale(0.88); opacity: 0.14; }
+      100% { transform: scale(1.0);  opacity: 0;    }
+    }
+
+    #hero .hero-pre,
+    #hero .hero-title,
+    #hero .hero-location,
+    #hero .hero-mission,
+    #hero .scroll-hint {
+      position: relative;
+      z-index: 1;
     }
 
     .hero-pre {
@@ -252,7 +310,7 @@
     }
 
     .join-headline {
-      font-size: clamp(1.4rem, 4vw, 2.5rem);
+      font-size: clamp(1.6rem, 4.5vw, 2.8rem);
       font-style: italic;
       font-weight: 400;
       line-height: 1.4;
@@ -271,9 +329,6 @@
     }
 
     .join-btn {
-      font-family: inherit;
-      background: none;
-      cursor: pointer;
       display: inline-block;
       padding: 0.8rem 2rem;
       border: 1px solid var(--sage-mid);
@@ -412,6 +467,44 @@
     }
     .modal-rsvp a { color: var(--sage-text); }
 
+    /* ══ ABOUT MODAL ══ */
+    .about-modal .modal {
+      max-width: 480px;
+      text-align: center;
+    }
+
+    .about-intention {
+      font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+      font-style: italic;
+      color: var(--sage-text);
+      line-height: 1.55;
+      margin-bottom: 1.8rem;
+      padding-bottom: 1.6rem;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .about-body {
+      font-size: 0.94rem;
+      color: var(--ink);
+      line-height: 1.82;
+      opacity: 0.86;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-facilitators {
+      font-size: 0.82rem;
+      color: var(--stone);
+      letter-spacing: 0.06em;
+      line-height: 1.75;
+      font-style: italic;
+    }
+
+    .about-facilitators strong {
+      color: var(--sage-text);
+      font-style: normal;
+      font-weight: 600;
+    }
+
     /* ══ RSVP FORM ══ */
     #rsvpForm {
       text-align: left;
@@ -497,12 +590,21 @@
 
 <!-- NAV -->
 <nav>
-  <span class="nav-wordmark">Sacred Sangha</span>
-  <button class="nav-cta" type="button" onclick="openModal();">Join a Gathering</button>
+  <div class="nav-left">
+    <button class="nav-about-btn" onclick="openAboutModal()">About</button>
+  </div>
+  <a class="nav-cta" href="#" onclick="openModal(); return false;">Join a Gathering</a>
 </nav>
 
 <!-- PAGE 1 · HERO -->
 <section id="hero">
+  <!-- Breath rings -->
+  <div class="breath-rings" id="breathRings" aria-hidden="true">
+    <div class="breath-ring" style="--delay: 0s;"></div>
+    <div class="breath-ring" style="--delay: -4.67s;"></div>
+    <div class="breath-ring" style="--delay: -9.33s;"></div>
+  </div>
+
   <p class="hero-pre">A community called,</p>
   <h1 class="hero-title">Sacred <em>Sangha</em></h1>
   <p class="hero-location">Minneapolis, MN</p>
@@ -514,7 +616,7 @@
 <section id="purpose">
   <p class="eyebrow">what we're here for</p>
   <blockquote class="purpose-quote">
-    "To settle into the awake awareness that we fundamentally are– living joyously and effortlessly from here."
+    To settle into the awake awareness that we fundamentally are– living joyously and effortlessly from here.
   </blockquote>
   <p class="purpose-body">
     We are humans with jobs, dishes and doings. Sacred Sangha provides a space where we can step out of doing and more into being — together.
@@ -525,14 +627,14 @@
 <section id="gathering">
   <p class="eyebrow">how a gathering moves</p>
   <p class="gathering-intro">
-    Each monthly gathering is fluid and organic– utilizing ancient practices in an easy and sincere way to address the needs of the day.
+    Each gathering is fluid and organic– utilizing ancient practices in an easy and sincere way to address the needs of the day.
   </p>
   <div class="domains-grid">
 
     <div class="domain-card">
       <span class="domain-label">settle</span>
       <span class="domain-title">Meditation</span>
-      <p class="domain-desc">We begin by arriving. A silent sit, guided or open — until we've actually landed. No rush.</p>
+      <p class="domain-desc">We begin by arriving. A silent sit, guided or open — until we've actually landed. No rush, no performance.</p>
     </div>
 
     <div class="domain-card">
@@ -559,7 +661,7 @@
 <!-- PAGE 4 · JOIN -->
 <section id="join">
   <h2 class="join-headline">Form authentic relationship<br>with yourself and others.<br><br>Come as you are.</h2>
-  <button class="join-btn" type="button" onclick="openRsvpModal();">RSVP</button>
+  <a class="join-btn" href="#" onclick="openRsvpModal(); return false;">RSVP</a>
 </section>
 
 <!-- FOOTER -->
@@ -569,13 +671,34 @@
   <p><a href="mailto:sanghaconnector@gmail.com">sanghaconnector@gmail.com</a></p>
 </footer>
 
+<!-- MODAL · ABOUT -->
+<div class="modal-overlay about-modal" id="aboutModal" role="dialog" aria-modal="true" aria-label="About Sacred Sangha">
+  <div class="modal">
+    <button class="modal-close" onclick="closeAboutModal()" aria-label="Close">×</button>
+    <h2>About</h2>
+    <p class="modal-rhythm">Sacred Sangha · Minneapolis</p>
+    <p class="about-intention">Created with one intention: make intentional connection easy and accessible.</p>
+    <p class="about-body">
+      No cost. No experience or special skills needed.<br>
+      Just an open heart.
+    </p>
+    <p class="about-body">
+      These gatherings are a co-creative experience — shaped by everyone who shows up. We sit, reflect, move, and talk together, trusting that something real happens when people gather with genuine intention.
+    </p>
+    <p class="about-facilitators">
+      Facilitated by <strong>Bobby Lescarbeau</strong><br>
+      and fellow sangha members.
+    </p>
+  </div>
+</div>
+
 <!-- MODAL · UPCOMING GATHERINGS -->
 <div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-label="Upcoming Gatherings">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()" aria-label="Close">×</button>
     <h2>Upcoming Gatherings</h2>
     <p class="modal-rhythm">Third Saturday of each month · 11:00 am – 1:30 pm</p>
-    <button type="button" class="join-btn modal-rsvp-link" onclick="switchToRsvp();">RSVP</button>
+    <a href="#" class="join-btn modal-rsvp-link" onclick="switchToRsvp(); return false;">RSVP</a>
 
     <p class="season-label">Indoor Season — Facilitator's Home</p>
 
@@ -701,15 +824,28 @@
     <h2>RSVP</h2>
     <p class="modal-rhythm">Let us know you're coming — or not</p>
 
-    <form id="rsvpForm" onsubmit="return sendRsvpEmail(event)">
+    <form
+      id="rsvpForm"
+      name="rsvp"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      action="/rsvp-thank-you.html"
+    >
+      <input type="hidden" name="form-name" value="rsvp" />
+      <input type="hidden" name="subject" value="New Sacred Sangha RSVP" />
+      <p style="display:none">
+        <label>Don't fill this out: <input name="bot-field" /></label>
+      </p>
+
       <div class="form-field">
         <label for="rsvp-name">Name</label>
-        <input type="text" id="rsvp-name" required />
+        <input type="text" id="rsvp-name" name="name" required />
       </div>
 
       <div class="form-field">
         <label for="rsvp-date">Which gathering</label>
-        <select id="rsvp-date" required>
+        <select id="rsvp-date" name="gathering_date" required>
           <option value="" disabled selected>Select a date</option>
           <option value="Sat, Nov 15, 2026">Sat, Nov 15, 2026 — Facilitator's Home</option>
           <option value="Sat, Dec 20, 2026">Sat, Dec 20, 2026 — Facilitator's Home</option>
@@ -743,13 +879,24 @@
     </form>
 
     <p class="modal-rsvp">
-      This opens your email app with everything filled in — just hit send.<br>
-      Questions? Reach out to <a href="mailto:sanghaconnector@gmail.com">sanghaconnector@gmail.com</a>
+      Questions? Reach out to<br>
+      <a href="mailto:sanghaconnector@gmail.com">sanghaconnector@gmail.com</a>
     </p>
   </div>
 </div>
 
 <script>
+  /* ── About Modal ── */
+  function openAboutModal() {
+    document.getElementById('aboutModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeAboutModal() {
+    document.getElementById('aboutModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ── Gatherings Modal ── */
   function openModal() {
     document.getElementById('modal').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -758,6 +905,8 @@
     document.getElementById('modal').classList.remove('open');
     document.body.style.overflow = '';
   }
+
+  /* ── RSVP Modal ── */
   function openRsvpModal() {
     document.getElementById('rsvpModal').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -771,40 +920,100 @@
     document.getElementById('rsvpModal').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
-  document.getElementById('modal').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
+
+  /* ── Close on overlay click ── */
+  ['aboutModal','modal','rsvpModal'].forEach(function(id) {
+    document.getElementById(id).addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
   });
-  document.getElementById('rsvpModal').addEventListener('click', function(e) {
-    if (e.target === this) closeRsvpModal();
-  });
+
+  /* ── Close on Escape ── */
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
+      closeAboutModal();
       closeModal();
       closeRsvpModal();
     }
   });
 
-  function sendRsvpEmail(e) {
-    e.preventDefault();
-    var name = document.getElementById('rsvp-name').value.trim();
-    var date = document.getElementById('rsvp-date').value;
-    var attendingEl = document.querySelector('input[name="attending"]:checked');
-    var attending = attendingEl ? attendingEl.value : '';
+  /* ── Position breath rings centered on hero title ── */
+  function positionBreathRings() {
+    var title = document.querySelector('.hero-title');
+    var rings = document.getElementById('breathRings');
+    var hero  = document.getElementById('hero');
+    if (!title || !rings || !hero) return;
 
-    var subject = 'Sacred Sangha RSVP — ' + name;
-    var body =
-      'Name: ' + name + '\n' +
-      'Gathering: ' + date + '\n' +
-      'Coming: ' + attending;
+    var titleRect = title.getBoundingClientRect();
+    var heroRect  = hero.getBoundingClientRect();
 
-    var mailto =
-      'mailto:sanghaconnector@gmail.com' +
-      '?subject=' + encodeURIComponent(subject) +
-      '&body=' + encodeURIComponent(body);
-
-    window.location.href = mailto;
-    return false;
+    // Center of the title relative to the hero section
+    var centerY = (titleRect.top - heroRect.top) + (titleRect.height / 2);
+    rings.style.top = centerY + 'px';
   }
+
+  positionBreathRings();
+  window.addEventListener('resize', positionBreathRings);
+
+  
+  let scrollTimer;
+  const rings = document.querySelectorAll('.breath-ring');
+
+  window.addEventListener('scroll', function() {
+    rings.forEach(function(r) { r.style.animationPlayState = 'paused'; });
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(function() {
+      rings.forEach(function(r) { r.style.animationPlayState = 'running'; });
+    }, 1500);
+  }, { passive: true });
+
+  /* ── Breath-lag scroll between sections ── */
+  (function() {
+    const sections = Array.from(document.querySelectorAll('section, footer'));
+    let isScrolling = false;
+    let lastScrollY = window.scrollY;
+    let breathLagTimer = null;
+    let lastSectionIndex = -1;
+
+    // Detect which section is in view
+    function getCurrentSectionIndex() {
+      const mid = window.scrollY + window.innerHeight * 0.5;
+      for (let i = sections.length - 1; i >= 0; i--) {
+        if (sections[i].offsetTop <= mid) return i;
+      }
+      return 0;
+    }
+
+    // Apply a gentle content-fade breath pause when crossing a section boundary
+    function applyBreathLag(sectionEl) {
+      sectionEl.style.transition = 'opacity 0.4s ease';
+      sectionEl.style.opacity = '0.55';
+      setTimeout(function() {
+        sectionEl.style.opacity = '1';
+      }, 700);
+    }
+
+    window.addEventListener('scroll', function() {
+      if (breathLagTimer) clearTimeout(breathLagTimer);
+
+      breathLagTimer = setTimeout(function() {
+        const currentIndex = getCurrentSectionIndex();
+        if (currentIndex !== lastSectionIndex && lastSectionIndex !== -1) {
+          // Crossed into a new section — apply breath lag
+          const lagDuration = 1000 + Math.random() * 800; // 1–1.8s
+          const newSection = sections[currentIndex];
+          applyBreathLag(newSection);
+        }
+        lastSectionIndex = currentIndex;
+      }, 80);
+    }, { passive: true });
+
+    // Init
+    lastSectionIndex = getCurrentSectionIndex();
+  })();
 </script>
 
 </body>
