@@ -823,42 +823,29 @@
     <h2>RSVP</h2>
     <p class="modal-rhythm">Let us know you're coming — or not</p>
 
-    <form
-      id="rsvpForm"
-      name="rsvp"
-      method="POST"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
-      action="/rsvp-thank-you.html"
-    >
-      <input type="hidden" name="form-name" value="rsvp" />
-      <input type="hidden" name="subject" value="New Sacred Sangha RSVP" />
-      <p style="display:none">
-        <label>Don't fill this out: <input name="bot-field" /></label>
-      </p>
-
+    <div id="rsvpForm">
       <div class="form-field">
         <label for="rsvp-name">Name</label>
-        <input type="text" id="rsvp-name" name="name" required />
+        <input type="text" id="rsvp-name" placeholder="Your name" />
       </div>
 
       <div class="form-field">
         <label for="rsvp-date">Which gathering</label>
-        <select id="rsvp-date" name="gathering_date" required>
+        <select id="rsvp-date">
           <option value="" disabled selected>Select a date</option>
-          <option value="Sat, Nov 7, 2026">Sat, Nov 7, 2026 — Facilitator's Home</option>
-          <option value="Sat, Dec 5, 2026">Sat, Dec 5, 2026 — Facilitator's Home</option>
-          <option value="Sat, Jan 2, 2027">Sat, Jan 2, 2027 — Facilitator's Home</option>
-          <option value="Sat, Feb 6, 2027">Sat, Feb 6, 2027 — Facilitator's Home</option>
-          <option value="Sat, Mar 6, 2027">Sat, Mar 6, 2027 — Facilitator's Home</option>
-          <option value="Sat, Apr 3, 2027">Sat, Apr 3, 2027 — Facilitator's Home</option>
-          <option value="Sat, May 1, 2027">Sat, May 1, 2027 — Kenwood Park</option>
-          <option value="Sat, Jun 5, 2027">Sat, Jun 5, 2027 — Kenwood Park</option>
-          <option value="Sat, Jul 3, 2027">Sat, Jul 3, 2027 — Kenwood Park</option>
-          <option value="Sat, Aug 7, 2027">Sat, Aug 7, 2027 — Kenwood Park</option>
-          <option value="Sat, Sep 6, 2027">Sat, Sep 6, 2027 — Kenwood Park</option>
-          <option value="Sat, Oct 4, 2027">Sat, Oct 4, 2027 — Facilitator's Home</option>
-          <option value="Sat, Nov 6, 2027">Sat, Nov 6, 2027 — Facilitator's Home</option>
+          <option value="Sat, Nov 7, 2026 — Facilitator's Home">Sat, Nov 7, 2026 — Facilitator's Home</option>
+          <option value="Sat, Dec 5, 2026 — Facilitator's Home">Sat, Dec 5, 2026 — Facilitator's Home</option>
+          <option value="Sat, Jan 2, 2027 — Facilitator's Home">Sat, Jan 2, 2027 — Facilitator's Home</option>
+          <option value="Sat, Feb 6, 2027 — Facilitator's Home">Sat, Feb 6, 2027 — Facilitator's Home</option>
+          <option value="Sat, Mar 6, 2027 — Facilitator's Home">Sat, Mar 6, 2027 — Facilitator's Home</option>
+          <option value="Sat, Apr 3, 2027 — Facilitator's Home">Sat, Apr 3, 2027 — Facilitator's Home</option>
+          <option value="Sat, May 1, 2027 — Kenwood Park">Sat, May 1, 2027 — Kenwood Park</option>
+          <option value="Sat, Jun 5, 2027 — Kenwood Park">Sat, Jun 5, 2027 — Kenwood Park</option>
+          <option value="Sat, Jul 3, 2027 — Kenwood Park">Sat, Jul 3, 2027 — Kenwood Park</option>
+          <option value="Sat, Aug 7, 2027 — Kenwood Park">Sat, Aug 7, 2027 — Kenwood Park</option>
+          <option value="Sat, Sep 6, 2027 — Kenwood Park">Sat, Sep 6, 2027 — Kenwood Park</option>
+          <option value="Sat, Oct 4, 2027 — Facilitator's Home">Sat, Oct 4, 2027 — Facilitator's Home</option>
+          <option value="Sat, Nov 6, 2027 — Facilitator's Home">Sat, Nov 6, 2027 — Facilitator's Home</option>
         </select>
       </div>
 
@@ -866,7 +853,7 @@
         <span class="form-label-static">Coming?</span>
         <div class="radio-row">
           <label class="radio-option">
-            <input type="radio" name="attending" value="Yes" required /> Yes
+            <input type="radio" name="attending" value="Yes" /> Yes
           </label>
           <label class="radio-option">
             <input type="radio" name="attending" value="No" /> No
@@ -874,8 +861,8 @@
         </div>
       </div>
 
-      <button type="submit" class="join-btn rsvp-submit">Send RSVP</button>
-    </form>
+      <button class="join-btn rsvp-submit" onclick="sendRsvp()">Send RSVP</button>
+    </div>
 
     <p class="modal-rsvp">
       Questions? Reach out to<br>
@@ -885,6 +872,28 @@
 </div>
 
 <script>
+  /* ── RSVP mailto ── */
+  function sendRsvp() {
+    var name     = document.getElementById('rsvp-name').value.trim();
+    var date     = document.getElementById('rsvp-date').value;
+    var attending = document.querySelector('input[name="attending"]:checked');
+
+    if (!name) { alert('Please enter your name.'); return; }
+    if (!date) { alert('Please select a gathering date.'); return; }
+    if (!attending) { alert('Please let us know if you\'re coming.'); return; }
+
+    var subject = encodeURIComponent('Sacred Sangha RSVP — ' + date);
+    var body    = encodeURIComponent(
+      'Hi Bobby,\n\n' +
+      'Name: ' + name + '\n' +
+      'Gathering: ' + date + '\n' +
+      'Attending: ' + attending.value + '\n\n' +
+      'Looking forward to it.'
+    );
+
+    window.location.href = 'mailto:sanghaconnector@gmail.com?subject=' + subject + '&body=' + body;
+  }
+
   /* ── About Modal ── */
   function openAboutModal() {
     document.getElementById('aboutModal').classList.add('open');
