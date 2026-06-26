@@ -504,6 +504,50 @@
       font-weight: 600;
     }
 
+    /* Bobby bio link */
+    .bobby-link {
+      color: var(--sage-text);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: inherit;
+      font-weight: 600;
+      font-style: normal;
+      letter-spacing: 0.06em;
+      padding: 0;
+      transition: opacity 0.2s;
+    }
+    .bobby-link:hover { opacity: 0.7; }
+
+    /* ══ BIO MODAL ══ */
+    .bio-modal .modal {
+      max-width: 480px;
+      text-align: center;
+    }
+
+    .bio-photo {
+      width: 100%;
+      max-width: 340px;
+      height: 260px;
+      object-fit: cover;
+      object-position: center 30%;
+      border-radius: 2px;
+      display: block;
+      margin: 0 auto 1.8rem;
+      opacity: 0.92;
+    }
+
+    .bio-body {
+      font-size: 0.97rem;
+      color: var(--ink);
+      line-height: 1.88;
+      opacity: 0.88;
+      font-style: italic;
+    }
+
     /* ══ RSVP FORM ══ */
     #rsvpForm {
       text-align: left;
@@ -659,7 +703,7 @@
 
 <!-- PAGE 4 · JOIN -->
 <section id="join">
-  <h2 class="join-headline">Come as you are.<br>Nothing required but an open heart.</h2>
+  <h2 class="join-headline">Form authentic relationship<br>with yourself and others.<br><br>Come as you are.</h2>
   <a class="join-btn" href="#" onclick="openRsvpModal(); return false;">RSVP</a>
 </section>
 
@@ -685,8 +729,20 @@
       These gatherings are a co-creative experience — shaped by everyone who shows up. We sit, reflect, move, and talk together, trusting that something real happens when people gather with genuine intention.
     </p>
     <p class="about-facilitators">
-      Facilitated by <strong>Bobby Lescarbeau</strong><br>
+      Facilitated by <button class="bobby-link" onclick="openBioModal()">Bobby Lescarbeau</button><br>
       and fellow sangha members.
+    </p>
+  </div>
+</div>
+
+<!-- MODAL · BOBBY BIO -->
+<div class="modal-overlay bio-modal" id="bioModal" role="dialog" aria-modal="true" aria-label="About Bobby Lescarbeau">
+  <div class="modal">
+    <button class="modal-close" onclick="closeBioModal()" aria-label="Close">×</button>
+    <h2>Bobby Lescarbeau</h2>
+    <p class="modal-rhythm">Facilitator · Sacred Sangha</p>
+    <p class="bio-body">
+      Bobby began his mindfulness study in 2020 — a path that has taken him to the Rocky Mountains, the Pacific Northwest, and eventually to the Bahamas, where he met his wife. All the while, the journey kept leading further into the heart. Bobby is a certified yoga and meditation teacher, a graduate student in Mental Health Counseling, and a sincere practitioner of the mindful arts. It is his deep pleasure to walk alongside you on this path of opening into awareness.
     </p>
   </div>
 </div>
@@ -874,13 +930,13 @@
 <script>
   /* ── RSVP mailto ── */
   function sendRsvp() {
-    var name     = document.getElementById('rsvp-name').value.trim();
-    var date     = document.getElementById('rsvp-date').value;
+    var name      = document.getElementById('rsvp-name').value.trim();
+    var date      = document.getElementById('rsvp-date').value;
     var attending = document.querySelector('input[name="attending"]:checked');
 
-    if (!name) { alert('Please enter your name.'); return; }
-    if (!date) { alert('Please select a gathering date.'); return; }
-    if (!attending) { alert('Please let us know if you\'re coming.'); return; }
+    if (!name)      { alert('Please enter your name.'); return; }
+    if (!date)      { alert('Please select a gathering date.'); return; }
+    if (!attending) { alert("Please let us know if you're coming."); return; }
 
     var subject = encodeURIComponent('Sacred Sangha RSVP — ' + date);
     var body    = encodeURIComponent(
@@ -902,6 +958,16 @@
   function closeAboutModal() {
     document.getElementById('aboutModal').classList.remove('open');
     document.body.style.overflow = '';
+  }
+
+  /* ── Bio Modal ── */
+  function openBioModal() {
+    document.getElementById('aboutModal').classList.remove('open');
+    document.getElementById('bioModal').classList.add('open');
+  }
+  function closeBioModal() {
+    document.getElementById('bioModal').classList.remove('open');
+    document.getElementById('aboutModal').classList.add('open');
   }
 
   /* ── Gatherings Modal ── */
@@ -930,9 +996,10 @@
   }
 
   /* ── Close on overlay click ── */
-  ['aboutModal','modal','rsvpModal'].forEach(function(id) {
+  ['aboutModal','bioModal','modal','rsvpModal'].forEach(function(id) {
     document.getElementById(id).addEventListener('click', function(e) {
       if (e.target === this) {
+        if (id === 'bioModal') { closeBioModal(); return; }
         this.classList.remove('open');
         document.body.style.overflow = '';
       }
@@ -942,6 +1009,9 @@
   /* ── Close on Escape ── */
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
+      if (document.getElementById('bioModal').classList.contains('open')) {
+        closeBioModal(); return;
+      }
       closeAboutModal();
       closeModal();
       closeRsvpModal();
@@ -954,19 +1024,18 @@
     var rings = document.getElementById('breathRings');
     var hero  = document.getElementById('hero');
     if (!title || !rings || !hero) return;
-
     var titleRect = title.getBoundingClientRect();
     var heroRect  = hero.getBoundingClientRect();
-
-    var centerY = (titleRect.top - heroRect.top) + (titleRect.height / 2);
+    var centerY   = (titleRect.top - heroRect.top) + (titleRect.height / 2);
     rings.style.top = centerY + 'px';
   }
 
   positionBreathRings();
   window.addEventListener('resize', positionBreathRings);
 
-  let scrollTimer;
-  const rings = document.querySelectorAll('.breath-ring');
+  /* ── Breath ring pause on scroll ── */
+  var scrollTimer;
+  var rings = document.querySelectorAll('.breath-ring');
 
   window.addEventListener('scroll', function() {
     rings.forEach(function(r) { r.style.animationPlayState = 'paused'; });
