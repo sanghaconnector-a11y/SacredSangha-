@@ -168,11 +168,20 @@
       line-height: 1.05;
       color: var(--sage-text);
       font-style: italic;
-      margin-bottom: 2rem;
+      margin-bottom: 1.3rem;
     }
     .hero-title em {
       font-style: normal;
       font-weight: 700;
+    }
+
+    .hero-gloss {
+      font-size: 0.74rem;
+      letter-spacing: 0.04em;
+      font-style: italic;
+      color: var(--stone);
+      opacity: 0.68;
+      margin-bottom: 2rem;
     }
 
     .hero-location {
@@ -607,6 +616,7 @@
 
   <p class="hero-pre">A community called,</p>
   <h1 class="hero-title">Sacred <em>Sangha</em></h1>
+  <p class="hero-gloss">sangha — a community to support well being</p>
   <p class="hero-location">Minneapolis, MN</p>
   <p class="hero-mission">A place for mindful, intentional connection— sacred yet simple.</p>
   <a class="scroll-hint" href="#purpose">sink in</a>
@@ -615,12 +625,12 @@
 <!-- PAGE 2 · PURPOSE -->
 <section id="purpose">
   <p class="eyebrow">what we're here for</p>
-  <blockquote class="purpose-quote">
-    To settle into the awake awareness that we fundamentally are– living joyously and effortlessly from here.
-  </blockquote>
   <p class="purpose-body">
     We are humans with jobs, dishes and doings. Sacred Sangha provides a space where we can step out of doing and more into being — together.
   </p>
+  <blockquote class="purpose-quote">
+    To settle into the awake awareness that we fundamentally are– living joyously and effortlessly from here.
+  </blockquote>
 </section>
 
 <!-- PAGE 3 · GATHERING -->
@@ -660,7 +670,7 @@
 
 <!-- PAGE 4 · JOIN -->
 <section id="join">
-  <h2 class="join-headline">Form authentic relationship<br>with yourself and others.<br><br>Come as you are.</h2>
+  <h2 class="join-headline">Form authentic relationship<br>with yourself and others.<br><br>Come as you are. Nothing required but an open heart.</h2>
   <a class="join-btn" href="#" onclick="openRsvpModal(); return false;">RSVP</a>
 </section>
 
@@ -677,7 +687,7 @@
     <button class="modal-close" onclick="closeAboutModal()" aria-label="Close">×</button>
     <h2>About</h2>
     <p class="modal-rhythm">Sacred Sangha · Minneapolis</p>
-    <p class="about-intention">Created with one intention: make intentional connection easy and accessible.</p>
+    <p class="about-intention">Created to make intentional, heart-centered connection easy and accessible.</p>
     <p class="about-body">
       No cost. No experience or special skills needed.<br>
       Just an open heart.
@@ -970,50 +980,7 @@
     }, 1500);
   }, { passive: true });
 
-  /* ── Breath-lag scroll between sections ── */
-  (function() {
-    const sections = Array.from(document.querySelectorAll('section, footer'));
-    let isScrolling = false;
-    let lastScrollY = window.scrollY;
-    let breathLagTimer = null;
-    let lastSectionIndex = -1;
 
-    // Detect which section is in view
-    function getCurrentSectionIndex() {
-      const mid = window.scrollY + window.innerHeight * 0.5;
-      for (let i = sections.length - 1; i >= 0; i--) {
-        if (sections[i].offsetTop <= mid) return i;
-      }
-      return 0;
-    }
-
-    // Apply a gentle content-fade breath pause when crossing a section boundary
-    function applyBreathLag(sectionEl) {
-      sectionEl.style.transition = 'opacity 0.4s ease';
-      sectionEl.style.opacity = '0.55';
-      setTimeout(function() {
-        sectionEl.style.opacity = '1';
-      }, 700);
-    }
-
-    window.addEventListener('scroll', function() {
-      if (breathLagTimer) clearTimeout(breathLagTimer);
-
-      breathLagTimer = setTimeout(function() {
-        const currentIndex = getCurrentSectionIndex();
-        if (currentIndex !== lastSectionIndex && lastSectionIndex !== -1) {
-          // Crossed into a new section — apply breath lag
-          const lagDuration = 1000 + Math.random() * 800; // 1–1.8s
-          const newSection = sections[currentIndex];
-          applyBreathLag(newSection);
-        }
-        lastSectionIndex = currentIndex;
-      }, 80);
-    }, { passive: true });
-
-    // Init
-    lastSectionIndex = getCurrentSectionIndex();
-  })();
 </script>
 
 </body>
