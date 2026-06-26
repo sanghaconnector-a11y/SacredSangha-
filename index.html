@@ -105,11 +105,10 @@
       overflow: hidden;
     }
 
-    /* ── Breath Rings ── */
     .breath-rings {
       position: absolute;
       left: 50%;
-      top: 0; /* nudged by JS to align with hero title center */
+      top: 0;
       transform: translateX(-50%);
       pointer-events: none;
       z-index: 0;
@@ -117,7 +116,6 @@
       height: 0;
     }
 
-    /* Each ring: concentric circles all centered on the same origin */
     .breath-ring {
       position: absolute;
       border-radius: 50%;
@@ -133,10 +131,8 @@
       animation-delay: var(--delay, 0s);
     }
 
-    /* All three rings expand to the same size — stagger creates the ripple illusion */
     .breath-ring { --base-size: 380px; }
 
-    /* Ripple outward: born small, expand, dissolve — never contract back */
     @keyframes breathCycle {
       0%   { transform: scale(0.08); opacity: 0;    }
       6%   { transform: scale(0.10); opacity: 0.55; }
@@ -225,14 +221,23 @@
       gap: 0;
     }
 
+    .purpose-body {
+      font-size: clamp(0.97rem, 1.8vw, 1.12rem);
+      color: var(--ink);
+      max-width: 500px;
+      opacity: 0.82;
+      line-height: 1.8;
+      margin-bottom: 2.8rem;
+    }
+
     .purpose-quote {
       font-size: clamp(1.2rem, 3vw, 1.85rem);
       font-style: italic;
       color: var(--ink);
       max-width: 620px;
       line-height: 1.55;
-      margin-bottom: 2rem;
       position: relative;
+      padding: 0 0.4rem;
     }
 
     .purpose-quote::before {
@@ -244,14 +249,6 @@
       top: -1.2rem;
       left: -1.6rem;
       line-height: 1;
-    }
-
-    .purpose-body {
-      font-size: clamp(0.97rem, 1.8vw, 1.12rem);
-      color: var(--ink);
-      max-width: 500px;
-      opacity: 0.82;
-      line-height: 1.8;
     }
 
     /* ══ PAGE 3 · GATHERING ══ */
@@ -319,22 +316,13 @@
     }
 
     .join-headline {
-      font-size: clamp(1.6rem, 4.5vw, 2.8rem);
+      font-size: clamp(1.25rem, 3vw, 1.9rem);
       font-style: italic;
       font-weight: 400;
-      line-height: 1.4;
-      max-width: 560px;
+      line-height: 1.5;
+      max-width: 480px;
       color: var(--ink);
       margin-bottom: 2.4rem;
-    }
-
-    .join-subline {
-      font-size: clamp(0.92rem, 1.7vw, 1.05rem);
-      color: var(--ink);
-      opacity: 0.72;
-      max-width: 420px;
-      line-height: 1.72;
-      margin-bottom: 2.2rem;
     }
 
     .join-btn {
@@ -607,7 +595,6 @@
 
 <!-- PAGE 1 · HERO -->
 <section id="hero">
-  <!-- Breath rings -->
   <div class="breath-rings" id="breathRings" aria-hidden="true">
     <div class="breath-ring" style="--delay: 0s;"></div>
     <div class="breath-ring" style="--delay: -4.67s;"></div>
@@ -629,7 +616,7 @@
     We are humans with jobs, dishes and doings. Sacred Sangha provides a space where we can step out of doing and more into being — together.
   </p>
   <blockquote class="purpose-quote">
-    To settle into the awake awareness that we fundamentally are– living joyously and effortlessly from here.
+    &#8220;To settle into the awake awareness that we fundamentally are&#8211; living joyously and effortlessly from here.&#8221;
   </blockquote>
 </section>
 
@@ -637,7 +624,7 @@
 <section id="gathering">
   <p class="eyebrow">how a gathering moves</p>
   <p class="gathering-intro">
-    Each gathering is fluid and organic– utilizing ancient practices in an easy and sincere way to address the needs of the day.
+    Each gathering is fluid and organic&#8211; utilizing ancient and modern practices in an easy and sincere way to address the needs of the day.
   </p>
   <div class="domains-grid">
 
@@ -670,7 +657,7 @@
 
 <!-- PAGE 4 · JOIN -->
 <section id="join">
-  <h2 class="join-headline">Form authentic relationship<br>with yourself and others.<br><br>Come as you are. Nothing required but an open heart.</h2>
+  <h2 class="join-headline">Come as you are.<br>Nothing required but an open heart.</h2>
   <a class="join-btn" href="#" onclick="openRsvpModal(); return false;">RSVP</a>
 </section>
 
@@ -707,14 +694,14 @@
   <div class="modal">
     <button class="modal-close" onclick="closeModal()" aria-label="Close">×</button>
     <h2>Upcoming Gatherings</h2>
-    <p class="modal-rhythm">Third Saturday of each month · 11:00 am – 1:30 pm</p>
+    <p class="modal-rhythm">First Saturday of each month · 11:00 am – 1:30 pm</p>
     <a href="#" class="join-btn modal-rsvp-link" onclick="switchToRsvp(); return false;">RSVP</a>
 
     <p class="season-label">Indoor Season — Facilitator's Home</p>
 
     <div class="date-row">
       <div class="date-info">
-        <strong>Sat, Nov 15, 2026</strong>
+        <strong>Sat, Nov 7, 2026</strong>
         <span>Facilitator's Home · Address shared upon RSVP</span>
       </div>
       <span class="date-time">11 am – 1:30 pm</span>
@@ -722,7 +709,7 @@
 
     <div class="date-row">
       <div class="date-info">
-        <strong>Sat, Dec 20, 2026</strong>
+        <strong>Sat, Dec 5, 2026</strong>
         <span>Facilitator's Home · Address shared upon RSVP</span>
       </div>
       <span class="date-time">11 am – 1:30 pm</span>
@@ -730,7 +717,7 @@
 
     <div class="date-row">
       <div class="date-info">
-        <strong>Sat, Jan 17, 2027</strong>
+        <strong>Sat, Jan 2, 2027</strong>
         <span>Facilitator's Home · Address shared upon RSVP</span>
       </div>
       <span class="date-time">11 am – 1:30 pm</span>
@@ -738,7 +725,7 @@
 
     <div class="date-row">
       <div class="date-info">
-        <strong>Sat, Feb 21, 2027</strong>
+        <strong>Sat, Feb 6, 2027</strong>
         <span>Facilitator's Home · Address shared upon RSVP</span>
       </div>
       <span class="date-time">11 am – 1:30 pm</span>
@@ -746,7 +733,7 @@
 
     <div class="date-row">
       <div class="date-info">
-        <strong>Sat, Mar 20, 2027</strong>
+        <strong>Sat, Mar 6, 2027</strong>
         <span>Facilitator's Home · Address shared upon RSVP</span>
       </div>
       <span class="date-time">11 am – 1:30 pm</span>
@@ -754,7 +741,7 @@
 
     <div class="date-row">
       <div class="date-info">
-        <strong>Sat, Apr 17, 2027</strong>
+        <strong>Sat, Apr 3, 2027</strong>
         <span>Facilitator's Home · Address shared upon RSVP</span>
       </div>
       <span class="date-time">11 am – 1:30 pm</span>
@@ -764,7 +751,7 @@
 
     <div class="date-row">
       <div class="date-info">
-        <strong>Sat, May 15, 2027</strong>
+        <strong>Sat, May 1, 2027</strong>
         <span>Kenwood Park · Minneapolis, MN</span>
       </div>
       <span class="date-time">11 am – 1:30 pm</span>
@@ -772,7 +759,7 @@
 
     <div class="date-row">
       <div class="date-info">
-        <strong>Sat, Jun 19, 2027</strong>
+        <strong>Sat, Jun 5, 2027</strong>
         <span>Kenwood Park · Minneapolis, MN</span>
       </div>
       <span class="date-time">11 am – 1:30 pm</span>
@@ -780,7 +767,7 @@
 
     <div class="date-row">
       <div class="date-info">
-        <strong>Sat, Jul 17, 2027</strong>
+        <strong>Sat, Jul 3, 2027</strong>
         <span>Kenwood Park · Minneapolis, MN</span>
       </div>
       <span class="date-time">11 am – 1:30 pm</span>
@@ -788,7 +775,7 @@
 
     <div class="date-row">
       <div class="date-info">
-        <strong>Sat, Aug 21, 2027</strong>
+        <strong>Sat, Aug 7, 2027</strong>
         <span>Kenwood Park · Minneapolis, MN</span>
       </div>
       <span class="date-time">11 am – 1:30 pm</span>
@@ -796,7 +783,7 @@
 
     <div class="date-row">
       <div class="date-info">
-        <strong>Sat, Sep 18, 2027</strong>
+        <strong>Sat, Sep 6, 2027</strong>
         <span>Kenwood Park · Minneapolis, MN</span>
       </div>
       <span class="date-time">11 am – 1:30 pm</span>
@@ -806,7 +793,7 @@
 
     <div class="date-row">
       <div class="date-info">
-        <strong>Sat, Oct 16, 2027</strong>
+        <strong>Sat, Oct 4, 2027</strong>
         <span>Facilitator's Home · Address shared upon RSVP</span>
       </div>
       <span class="date-time">11 am – 1:30 pm</span>
@@ -814,7 +801,7 @@
 
     <div class="date-row">
       <div class="date-info">
-        <strong>Sat, Nov 20, 2027</strong>
+        <strong>Sat, Nov 6, 2027</strong>
         <span>Facilitator's Home · Address shared upon RSVP</span>
       </div>
       <span class="date-time">11 am – 1:30 pm</span>
@@ -857,19 +844,19 @@
         <label for="rsvp-date">Which gathering</label>
         <select id="rsvp-date" name="gathering_date" required>
           <option value="" disabled selected>Select a date</option>
-          <option value="Sat, Nov 15, 2026">Sat, Nov 15, 2026 — Facilitator's Home</option>
-          <option value="Sat, Dec 20, 2026">Sat, Dec 20, 2026 — Facilitator's Home</option>
-          <option value="Sat, Jan 17, 2027">Sat, Jan 17, 2027 — Facilitator's Home</option>
-          <option value="Sat, Feb 21, 2027">Sat, Feb 21, 2027 — Facilitator's Home</option>
-          <option value="Sat, Mar 20, 2027">Sat, Mar 20, 2027 — Facilitator's Home</option>
-          <option value="Sat, Apr 17, 2027">Sat, Apr 17, 2027 — Facilitator's Home</option>
-          <option value="Sat, May 15, 2027">Sat, May 15, 2027 — Kenwood Park</option>
-          <option value="Sat, Jun 19, 2027">Sat, Jun 19, 2027 — Kenwood Park</option>
-          <option value="Sat, Jul 17, 2027">Sat, Jul 17, 2027 — Kenwood Park</option>
-          <option value="Sat, Aug 21, 2027">Sat, Aug 21, 2027 — Kenwood Park</option>
-          <option value="Sat, Sep 18, 2027">Sat, Sep 18, 2027 — Kenwood Park</option>
-          <option value="Sat, Oct 16, 2027">Sat, Oct 16, 2027 — Facilitator's Home</option>
-          <option value="Sat, Nov 20, 2027">Sat, Nov 20, 2027 — Facilitator's Home</option>
+          <option value="Sat, Nov 7, 2026">Sat, Nov 7, 2026 — Facilitator's Home</option>
+          <option value="Sat, Dec 5, 2026">Sat, Dec 5, 2026 — Facilitator's Home</option>
+          <option value="Sat, Jan 2, 2027">Sat, Jan 2, 2027 — Facilitator's Home</option>
+          <option value="Sat, Feb 6, 2027">Sat, Feb 6, 2027 — Facilitator's Home</option>
+          <option value="Sat, Mar 6, 2027">Sat, Mar 6, 2027 — Facilitator's Home</option>
+          <option value="Sat, Apr 3, 2027">Sat, Apr 3, 2027 — Facilitator's Home</option>
+          <option value="Sat, May 1, 2027">Sat, May 1, 2027 — Kenwood Park</option>
+          <option value="Sat, Jun 5, 2027">Sat, Jun 5, 2027 — Kenwood Park</option>
+          <option value="Sat, Jul 3, 2027">Sat, Jul 3, 2027 — Kenwood Park</option>
+          <option value="Sat, Aug 7, 2027">Sat, Aug 7, 2027 — Kenwood Park</option>
+          <option value="Sat, Sep 6, 2027">Sat, Sep 6, 2027 — Kenwood Park</option>
+          <option value="Sat, Oct 4, 2027">Sat, Oct 4, 2027 — Facilitator's Home</option>
+          <option value="Sat, Nov 6, 2027">Sat, Nov 6, 2027 — Facilitator's Home</option>
         </select>
       </div>
 
@@ -960,7 +947,6 @@
     var titleRect = title.getBoundingClientRect();
     var heroRect  = hero.getBoundingClientRect();
 
-    // Center of the title relative to the hero section
     var centerY = (titleRect.top - heroRect.top) + (titleRect.height / 2);
     rings.style.top = centerY + 'px';
   }
@@ -968,7 +954,6 @@
   positionBreathRings();
   window.addEventListener('resize', positionBreathRings);
 
-  
   let scrollTimer;
   const rings = document.querySelectorAll('.breath-ring');
 
@@ -979,8 +964,6 @@
       rings.forEach(function(r) { r.style.animationPlayState = 'running'; });
     }, 1500);
   }, { passive: true });
-
-
 </script>
 
 </body>
