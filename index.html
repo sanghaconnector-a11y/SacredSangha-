@@ -42,6 +42,10 @@
       background: rgba(245,240,232,0.92);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--divider);
+      transition: box-shadow 0.3s ease;
+    }
+    nav.scrolled {
+      box-shadow: 0 2px 18px rgba(44,40,32,0.07);
     }
 
     .nav-left {
@@ -143,6 +147,7 @@
 
     #hero .hero-pre,
     #hero .hero-title,
+    #hero .hero-gloss,
     #hero .hero-location,
     #hero .hero-mission,
     #hero .scroll-hint {
@@ -211,7 +216,15 @@
       transition: color 0.2s;
     }
     .scroll-hint:hover { color: var(--sage-text); }
-    .scroll-hint::after { content: '↓'; font-size: 1rem; }
+    .scroll-hint::after {
+      content: '↓';
+      font-size: 1rem;
+      animation: nudgeDown 2.4s ease-in-out infinite;
+    }
+    @keyframes nudgeDown {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(5px); }
+    }
 
     /* ══ PAGE 2 · PURPOSE ══ */
     #purpose {
@@ -285,6 +298,12 @@
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+      transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .domain-card:hover {
+      border-color: var(--sage-mid);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(44,40,32,0.07);
     }
 
     .domain-label {
@@ -338,6 +357,9 @@
       text-transform: uppercase;
       border-radius: 2px;
       transition: background 0.2s, color 0.2s;
+      font-family: Georgia, 'Times New Roman', serif;
+      background: none;
+      cursor: pointer;
     }
     .join-btn:hover { background: var(--sage-text); color: var(--beige); }
 
@@ -377,8 +399,15 @@
       align-items: center;
       justify-content: center;
       padding: 1.2rem;
+      opacity: 0;
+      transition: opacity 0.25s ease;
     }
-    .modal-overlay.open { display: flex; }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal-overlay.open.visible {
+      opacity: 1;
+    }
 
     .modal {
       background: var(--beige);
@@ -389,6 +418,11 @@
       position: relative;
       max-height: 90svh;
       overflow-y: auto;
+      transform: translateY(12px);
+      transition: transform 0.28s ease;
+    }
+    .modal-overlay.open.visible .modal {
+      transform: translateY(0);
     }
 
     .modal-close {
@@ -400,6 +434,7 @@
       cursor: pointer;
       color: var(--stone);
       line-height: 1;
+      transition: color 0.2s;
     }
     .modal-close:hover { color: var(--ink); }
 
@@ -442,6 +477,13 @@
       padding: 0.65rem 0;
       border-bottom: 1px solid var(--divider);
       gap: 1rem;
+      transition: background 0.18s ease;
+    }
+    .date-row:hover {
+      background: rgba(107,143,111,0.06);
+      border-radius: 2px;
+      padding-left: 0.4rem;
+      padding-right: 0.4rem;
     }
 
     .date-info { text-align: left; }
@@ -504,7 +546,6 @@
       font-weight: 600;
     }
 
-    /* Bobby bio link */
     .bobby-link {
       color: var(--sage-text);
       text-decoration: underline;
@@ -526,18 +567,6 @@
     .bio-modal .modal {
       max-width: 480px;
       text-align: center;
-    }
-
-    .bio-photo {
-      width: 100%;
-      max-width: 340px;
-      height: 260px;
-      object-fit: cover;
-      object-position: center 30%;
-      border-radius: 2px;
-      display: block;
-      margin: 0 auto 1.8rem;
-      opacity: 0.92;
     }
 
     .bio-body {
@@ -578,6 +607,7 @@
       border: 1px solid var(--divider);
       border-radius: 2px;
       padding: 0.6rem 0.7rem;
+      transition: border-color 0.2s ease;
     }
 
     .form-field input[type="text"]:focus,
@@ -612,6 +642,30 @@
       font-family: Georgia, 'Times New Roman', serif;
     }
 
+    /* ══ SCROLL FADE-IN ══ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ══ REDUCED MOTION ══ */
+    @media (prefers-reduced-motion: reduce) {
+      .breath-ring { animation: none; opacity: 0.12; }
+      .scroll-hint::after { animation: none; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .domain-card { transition: none; }
+      .modal, .modal-overlay { transition: none; }
+    }
+
     /* ══ RESPONSIVE ══ */
     @media (max-width: 640px) {
       nav { padding: 0.8rem 1.1rem; }
@@ -632,7 +686,7 @@
 <body>
 
 <!-- NAV -->
-<nav>
+<nav id="mainNav">
   <div class="nav-left">
     <button class="nav-about-btn" onclick="openAboutModal()">About</button>
   </div>
@@ -657,54 +711,49 @@
 
 <!-- PAGE 2 · PURPOSE -->
 <section id="purpose">
-  <p class="eyebrow">what we're here for</p>
-  <p class="purpose-body">
+  <p class="eyebrow reveal">what we're here for</p>
+  <p class="purpose-body reveal reveal-delay-1">
     We are humans with jobs, dishes and doings. <strong>Sacred Sangha</strong> provides a space where we can step out of doing and more into being — together.
   </p>
-  <blockquote class="purpose-quote">
+  <blockquote class="purpose-quote reveal reveal-delay-2">
     &#8220;To settle into the awake awareness that we fundamentally are&#8211; living joyously and effortlessly from here.&#8221;
   </blockquote>
 </section>
 
 <!-- PAGE 3 · GATHERING -->
 <section id="gathering">
-  <p class="eyebrow">how a gathering moves</p>
-  <p class="gathering-intro">
+  <p class="eyebrow reveal">how a gathering moves</p>
+  <p class="gathering-intro reveal reveal-delay-1">
     Each gathering is fluid and organic&#8211; utilizing ancient and modern practices in an easy and sincere way to address the needs of the day.
   </p>
   <div class="domains-grid">
-
-    <div class="domain-card">
+    <div class="domain-card reveal reveal-delay-1">
       <span class="domain-label">settle</span>
       <span class="domain-title">Meditation</span>
       <p class="domain-desc">We begin by arriving. A silent sit, guided or open — until we've actually landed. No rush, no performance.</p>
     </div>
-
-    <div class="domain-card">
+    <div class="domain-card reveal reveal-delay-2">
       <span class="domain-label">inquire</span>
       <span class="domain-title">Self-Reflection</span>
       <p class="domain-desc">Journaling, quiet inquiry, or words shared aloud. A curious look at what's present.</p>
     </div>
-
-    <div class="domain-card">
+    <div class="domain-card reveal reveal-delay-3">
       <span class="domain-label">embody</span>
       <span class="domain-title">Somatics</span>
       <p class="domain-desc">Yoga, qigong, gentle movement — awareness wearing a body for a while. Practice, not performance.</p>
     </div>
-
-    <div class="domain-card">
+    <div class="domain-card reveal reveal-delay-4">
       <span class="domain-label">connect</span>
       <span class="domain-title">Conversation</span>
       <p class="domain-desc">Real talk, games, shared laughter — the part where spacious meets human. Connection as its own practice.</p>
     </div>
-
   </div>
 </section>
 
 <!-- PAGE 4 · JOIN -->
 <section id="join">
-  <h2 class="join-headline">Come as you are. Nothing required but an open heart.</h2>
-  <a class="join-btn" href="#" onclick="openRsvpModal(); return false;">RSVP</a>
+  <h2 class="join-headline reveal">Come as you are. Nothing required but an open heart.</h2>
+  <a class="join-btn reveal reveal-delay-1" href="#" onclick="openRsvpModal(); return false;">RSVP</a>
 </section>
 
 <!-- FOOTER -->
@@ -756,114 +805,23 @@
     <a href="#" class="join-btn modal-rsvp-link" onclick="switchToRsvp(); return false;">RSVP</a>
 
     <p class="season-label">Indoor Season — Facilitator's Home</p>
-
-    <div class="date-row">
-      <div class="date-info">
-        <strong>Sat, Nov 7, 2026</strong>
-        <span>Facilitator's Home · Address shared upon RSVP</span>
-      </div>
-      <span class="date-time">11 am – 1:30 pm</span>
-    </div>
-
-    <div class="date-row">
-      <div class="date-info">
-        <strong>Sat, Dec 5, 2026</strong>
-        <span>Facilitator's Home · Address shared upon RSVP</span>
-      </div>
-      <span class="date-time">11 am – 1:30 pm</span>
-    </div>
-
-    <div class="date-row">
-      <div class="date-info">
-        <strong>Sat, Jan 2, 2027</strong>
-        <span>Facilitator's Home · Address shared upon RSVP</span>
-      </div>
-      <span class="date-time">11 am – 1:30 pm</span>
-    </div>
-
-    <div class="date-row">
-      <div class="date-info">
-        <strong>Sat, Feb 6, 2027</strong>
-        <span>Facilitator's Home · Address shared upon RSVP</span>
-      </div>
-      <span class="date-time">11 am – 1:30 pm</span>
-    </div>
-
-    <div class="date-row">
-      <div class="date-info">
-        <strong>Sat, Mar 6, 2027</strong>
-        <span>Facilitator's Home · Address shared upon RSVP</span>
-      </div>
-      <span class="date-time">11 am – 1:30 pm</span>
-    </div>
-
-    <div class="date-row">
-      <div class="date-info">
-        <strong>Sat, Apr 3, 2027</strong>
-        <span>Facilitator's Home · Address shared upon RSVP</span>
-      </div>
-      <span class="date-time">11 am – 1:30 pm</span>
-    </div>
+    <div class="date-row"><div class="date-info"><strong>Sat, Nov 7, 2026</strong><span>Facilitator's Home · Address shared upon RSVP</span></div><span class="date-time">11 am – 1:30 pm</span></div>
+    <div class="date-row"><div class="date-info"><strong>Sat, Dec 5, 2026</strong><span>Facilitator's Home · Address shared upon RSVP</span></div><span class="date-time">11 am – 1:30 pm</span></div>
+    <div class="date-row"><div class="date-info"><strong>Sat, Jan 2, 2027</strong><span>Facilitator's Home · Address shared upon RSVP</span></div><span class="date-time">11 am – 1:30 pm</span></div>
+    <div class="date-row"><div class="date-info"><strong>Sat, Feb 6, 2027</strong><span>Facilitator's Home · Address shared upon RSVP</span></div><span class="date-time">11 am – 1:30 pm</span></div>
+    <div class="date-row"><div class="date-info"><strong>Sat, Mar 6, 2027</strong><span>Facilitator's Home · Address shared upon RSVP</span></div><span class="date-time">11 am – 1:30 pm</span></div>
+    <div class="date-row"><div class="date-info"><strong>Sat, Apr 3, 2027</strong><span>Facilitator's Home · Address shared upon RSVP</span></div><span class="date-time">11 am – 1:30 pm</span></div>
 
     <p class="season-label">Outdoor Season — Kenwood Park, Minneapolis</p>
-
-    <div class="date-row">
-      <div class="date-info">
-        <strong>Sat, May 1, 2027</strong>
-        <span>Kenwood Park · Minneapolis, MN</span>
-      </div>
-      <span class="date-time">11 am – 1:30 pm</span>
-    </div>
-
-    <div class="date-row">
-      <div class="date-info">
-        <strong>Sat, Jun 5, 2027</strong>
-        <span>Kenwood Park · Minneapolis, MN</span>
-      </div>
-      <span class="date-time">11 am – 1:30 pm</span>
-    </div>
-
-    <div class="date-row">
-      <div class="date-info">
-        <strong>Sat, Jul 3, 2027</strong>
-        <span>Kenwood Park · Minneapolis, MN</span>
-      </div>
-      <span class="date-time">11 am – 1:30 pm</span>
-    </div>
-
-    <div class="date-row">
-      <div class="date-info">
-        <strong>Sat, Aug 7, 2027</strong>
-        <span>Kenwood Park · Minneapolis, MN</span>
-      </div>
-      <span class="date-time">11 am – 1:30 pm</span>
-    </div>
-
-    <div class="date-row">
-      <div class="date-info">
-        <strong>Sat, Sep 6, 2027</strong>
-        <span>Kenwood Park · Minneapolis, MN</span>
-      </div>
-      <span class="date-time">11 am – 1:30 pm</span>
-    </div>
+    <div class="date-row"><div class="date-info"><strong>Sat, May 1, 2027</strong><span>Kenwood Park · Minneapolis, MN</span></div><span class="date-time">11 am – 1:30 pm</span></div>
+    <div class="date-row"><div class="date-info"><strong>Sat, Jun 5, 2027</strong><span>Kenwood Park · Minneapolis, MN</span></div><span class="date-time">11 am – 1:30 pm</span></div>
+    <div class="date-row"><div class="date-info"><strong>Sat, Jul 3, 2027</strong><span>Kenwood Park · Minneapolis, MN</span></div><span class="date-time">11 am – 1:30 pm</span></div>
+    <div class="date-row"><div class="date-info"><strong>Sat, Aug 7, 2027</strong><span>Kenwood Park · Minneapolis, MN</span></div><span class="date-time">11 am – 1:30 pm</span></div>
+    <div class="date-row"><div class="date-info"><strong>Sat, Sep 6, 2027</strong><span>Kenwood Park · Minneapolis, MN</span></div><span class="date-time">11 am – 1:30 pm</span></div>
 
     <p class="season-label">Indoor Season — Facilitator's Home</p>
-
-    <div class="date-row">
-      <div class="date-info">
-        <strong>Sat, Oct 4, 2027</strong>
-        <span>Facilitator's Home · Address shared upon RSVP</span>
-      </div>
-      <span class="date-time">11 am – 1:30 pm</span>
-    </div>
-
-    <div class="date-row">
-      <div class="date-info">
-        <strong>Sat, Nov 6, 2027</strong>
-        <span>Facilitator's Home · Address shared upon RSVP</span>
-      </div>
-      <span class="date-time">11 am – 1:30 pm</span>
-    </div>
+    <div class="date-row"><div class="date-info"><strong>Sat, Oct 4, 2027</strong><span>Facilitator's Home · Address shared upon RSVP</span></div><span class="date-time">11 am – 1:30 pm</span></div>
+    <div class="date-row"><div class="date-info"><strong>Sat, Nov 6, 2027</strong><span>Facilitator's Home · Address shared upon RSVP</span></div><span class="date-time">11 am – 1:30 pm</span></div>
 
     <p class="modal-rsvp">
       Questions? Reach out to<br>
@@ -884,7 +842,6 @@
         <label for="rsvp-name">Name</label>
         <input type="text" id="rsvp-name" placeholder="Your name" />
       </div>
-
       <div class="form-field">
         <label for="rsvp-date">Which gathering</label>
         <select id="rsvp-date">
@@ -904,19 +861,13 @@
           <option value="Sat, Nov 6, 2027 — Facilitator's Home">Sat, Nov 6, 2027 — Facilitator's Home</option>
         </select>
       </div>
-
       <div class="form-field">
         <span class="form-label-static">Coming?</span>
         <div class="radio-row">
-          <label class="radio-option">
-            <input type="radio" name="attending" value="Yes" /> Yes
-          </label>
-          <label class="radio-option">
-            <input type="radio" name="attending" value="No" /> No
-          </label>
+          <label class="radio-option"><input type="radio" name="attending" value="Yes" /> Yes</label>
+          <label class="radio-option"><input type="radio" name="attending" value="No" /> No</label>
         </div>
       </div>
-
       <button class="join-btn rsvp-submit" onclick="sendRsvp()">Send RSVP</button>
     </div>
 
@@ -933,66 +884,52 @@
     var name      = document.getElementById('rsvp-name').value.trim();
     var date      = document.getElementById('rsvp-date').value;
     var attending = document.querySelector('input[name="attending"]:checked');
-
     if (!name)      { alert('Please enter your name.'); return; }
     if (!date)      { alert('Please select a gathering date.'); return; }
     if (!attending) { alert("Please let us know if you're coming."); return; }
-
     var subject = encodeURIComponent('Sacred Sangha RSVP — ' + date);
     var body    = encodeURIComponent(
-      'Hi Bobby,\n\n' +
-      'Name: ' + name + '\n' +
-      'Gathering: ' + date + '\n' +
-      'Attending: ' + attending.value + '\n\n' +
-      'Looking forward to it.'
+      'Hi Bobby,\n\nName: ' + name + '\nGathering: ' + date + '\nAttending: ' + attending.value + '\n\nLooking forward to it.'
     );
-
     window.location.href = 'mailto:sanghaconnector@gmail.com?subject=' + subject + '&body=' + body;
   }
 
-  /* ── About Modal ── */
-  function openAboutModal() {
-    document.getElementById('aboutModal').classList.add('open');
+  /* ── Modal open/close helpers with animation ── */
+  function openOverlay(id) {
+    var el = document.getElementById(id);
+    el.classList.add('open');
     document.body.style.overflow = 'hidden';
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() { el.classList.add('visible'); });
+    });
   }
-  function closeAboutModal() {
-    document.getElementById('aboutModal').classList.remove('open');
-    document.body.style.overflow = '';
+  function closeOverlay(id) {
+    var el = document.getElementById(id);
+    el.classList.remove('visible');
+    setTimeout(function() {
+      el.classList.remove('open');
+      document.body.style.overflow = '';
+    }, 250);
   }
 
-  /* ── Bio Modal ── */
+  function openAboutModal()  { openOverlay('aboutModal'); }
+  function closeAboutModal() { closeOverlay('aboutModal'); }
+  function openModal()       { openOverlay('modal'); }
+  function closeModal()      { closeOverlay('modal'); }
+  function openRsvpModal()   { openOverlay('rsvpModal'); }
+  function closeRsvpModal()  { closeOverlay('rsvpModal'); }
+
   function openBioModal() {
-    document.getElementById('aboutModal').classList.remove('open');
-    document.getElementById('bioModal').classList.add('open');
+    closeOverlay('aboutModal');
+    setTimeout(function() { openOverlay('bioModal'); }, 260);
   }
   function closeBioModal() {
-    document.getElementById('bioModal').classList.remove('open');
-    document.getElementById('aboutModal').classList.add('open');
-  }
-
-  /* ── Gatherings Modal ── */
-  function openModal() {
-    document.getElementById('modal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeModal() {
-    document.getElementById('modal').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  /* ── RSVP Modal ── */
-  function openRsvpModal() {
-    document.getElementById('rsvpModal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeRsvpModal() {
-    document.getElementById('rsvpModal').classList.remove('open');
-    document.body.style.overflow = '';
+    closeOverlay('bioModal');
+    setTimeout(function() { openOverlay('aboutModal'); }, 260);
   }
   function switchToRsvp() {
-    document.getElementById('modal').classList.remove('open');
-    document.getElementById('rsvpModal').classList.add('open');
-    document.body.style.overflow = 'hidden';
+    closeOverlay('modal');
+    setTimeout(function() { openOverlay('rsvpModal'); }, 260);
   }
 
   /* ── Close on overlay click ── */
@@ -1000,8 +937,7 @@
     document.getElementById(id).addEventListener('click', function(e) {
       if (e.target === this) {
         if (id === 'bioModal') { closeBioModal(); return; }
-        this.classList.remove('open');
-        document.body.style.overflow = '';
+        closeOverlay(id);
       }
     });
   });
@@ -1009,14 +945,30 @@
   /* ── Close on Escape ── */
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-      if (document.getElementById('bioModal').classList.contains('open')) {
-        closeBioModal(); return;
-      }
-      closeAboutModal();
-      closeModal();
-      closeRsvpModal();
+      if (document.getElementById('bioModal').classList.contains('open')) { closeBioModal(); return; }
+      if (document.getElementById('aboutModal').classList.contains('open')) { closeAboutModal(); return; }
+      if (document.getElementById('modal').classList.contains('open'))      { closeModal(); return; }
+      if (document.getElementById('rsvpModal').classList.contains('open'))  { closeRsvpModal(); return; }
     }
   });
+
+  /* ── Nav shadow on scroll ── */
+  var nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', function() {
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+
+  /* ── Scroll reveal ── */
+  var revealEls = document.querySelectorAll('.reveal');
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(function(el) { revealObserver.observe(el); });
 
   /* ── Position breath rings centered on hero title ── */
   function positionBreathRings() {
@@ -1035,13 +987,12 @@
 
   /* ── Breath ring pause on scroll ── */
   var scrollTimer;
-  var rings = document.querySelectorAll('.breath-ring');
-
+  var breathRings = document.querySelectorAll('.breath-ring');
   window.addEventListener('scroll', function() {
-    rings.forEach(function(r) { r.style.animationPlayState = 'paused'; });
+    breathRings.forEach(function(r) { r.style.animationPlayState = 'paused'; });
     clearTimeout(scrollTimer);
     scrollTimer = setTimeout(function() {
-      rings.forEach(function(r) { r.style.animationPlayState = 'running'; });
+      breathRings.forEach(function(r) { r.style.animationPlayState = 'running'; });
     }, 1500);
   }, { passive: true });
 </script>
