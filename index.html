@@ -879,7 +879,7 @@
 </div>
 
 <script>
-  /* ── RSVP mailto ── */
+  /* ── RSVP via SMS ── */
   function sendRsvp() {
     var name      = document.getElementById('rsvp-name').value.trim();
     var date      = document.getElementById('rsvp-date').value;
@@ -887,11 +887,13 @@
     if (!name)      { alert('Please enter your name.'); return; }
     if (!date)      { alert('Please select a gathering date.'); return; }
     if (!attending) { alert("Please let us know if you're coming."); return; }
-    var subject = encodeURIComponent('Sacred Sangha RSVP — ' + date);
-    var body    = encodeURIComponent(
-      'Hi Bobby,\n\nName: ' + name + '\nGathering: ' + date + '\nAttending: ' + attending.value + '\n\nLooking forward to it.'
+    var body = encodeURIComponent(
+      'Hi Bobby,\n\nName: ' + name +
+      '\nGathering: ' + date +
+      '\nAttending: ' + attending.value +
+      '\n\nLooking forward to it.'
     );
-    window.location.href = 'mailto:sanghaconnector@gmail.com?subject=' + subject + '&body=' + body;
+    window.location.href = 'sms:16128346015?body=' + body;
   }
 
   /* ── Modal open/close helpers with animation ── */
